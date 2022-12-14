@@ -7,22 +7,27 @@ function App() {
   const [city, setCity] = useState("chicago");
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=38920dc3d2d7b05ac11436473723d742&units=imperial`
-      )
-      .then((response) => {
-        setTodaysWeather(response.data);
-      });
+    const fetchData = async () => {
+      const data = await axios
+        .get(
+          `https://api.openweathermap.org/data/2.5/weather?q=chicago&appid=38920dc3d2d7b05ac11436473723d742&units=imperial`
+        )
+        .catch((error) => {
+          console.log(error);
+        });
+      setCity(data);
+    };
+
+    fetchData();
   }, []);
+  // console.log(todaysWeather);
+  // if (!todaysWeather) return null;
 
-  if (!todaysWeather) return null;
-
-  console.log(todaysWeather.main.temp.toString());
+  // console.log(todaysWeather.main.temp.toString());
 
   const searchCity = (e) => {
     e.preventDefault();
-    console.log(e.target.elements.searchInput.value);
+    setCity(e.target.elements.searchInput.value);
   };
 
   return (
@@ -43,7 +48,7 @@ function App() {
 
       <section>
         <h2>Forecast</h2>
-        <p>{todaysWeather.main.temp.toString()}</p>
+        <p></p>
       </section>
       <section>
         <h2>History</h2>
